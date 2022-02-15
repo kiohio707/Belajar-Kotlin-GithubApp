@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Semester 8/Belajar Android/GithubApp/app/src/main/res/layout/activity_main.xml" value="0.1482889733840304" />
+        <entry key="..\:/Semester 8/Belajar Android/GithubApp/app/src/main/res/layout/activity_detail.xml" value="0.25" />
+        <entry key="..\:/Semester 8/Belajar Android/GithubApp/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Semester 8/Belajar Android/GithubApp/app/src/main/res/layout/adapter_user.xml" value="0.33" />
+        <entry key="..\:/Semester 8/Belajar Android/GithubApp/app/src/main/res/layout/fragment_follow.xml" value="0.1" />
       </map>
     </option>
   </component>

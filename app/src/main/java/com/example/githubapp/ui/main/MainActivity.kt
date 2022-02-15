@@ -1,15 +1,16 @@
-package com.example.githubapp
+package com.example.githubapp.ui.main
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.githubapp.ViewModel.MainViewModel
 import com.example.githubapp.adapter.UserAdapter
 import com.example.githubapp.databinding.ActivityMainBinding
+import com.example.githubapp.model.UserModel
+import com.example.githubapp.ui.detail.DetailUserActivity
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -25,6 +26,15 @@ class MainActivity : AppCompatActivity() {
         adapter = UserAdapter()
         adapter.notifyDataSetChanged()
 
+        adapter.setOnItemClickCallback(object : UserAdapter.OnItemClickCallback{
+            override fun onItemCLicked(userModel: UserModel) {
+                Intent(this@MainActivity, DetailUserActivity::class.java).also {
+                    it.putExtra(DetailUserActivity.EXTRA_USERNAME, userModel.login)
+                    startActivity(it)
+                }
+            }
+
+        })
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get((MainViewModel::class.java))
 
         binding.apply {
@@ -58,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         binding.apply {
             val query = edtSearch.text.toString()
 
-            if (query!!.isEmpty()) return
+            if (query.isEmpty()) return
 
             showLoading(true)
             viewModel.setSearchUsers(query)

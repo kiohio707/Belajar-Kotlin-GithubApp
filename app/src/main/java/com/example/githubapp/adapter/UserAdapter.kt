@@ -5,28 +5,37 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.example.githubapp.databinding.ActivityMainBinding
 import com.example.githubapp.databinding.AdapterUserBinding
-import com.example.githubapp.model.User
+import com.example.githubapp.model.UserModel
 
 class UserAdapter: RecyclerView.Adapter<UserAdapter.ViewHolder>() {
-    private val list = ArrayList<User>()
+    private val list = ArrayList<UserModel>()
 
-    fun setList(users: ArrayList<User>) {
+    private var onItemClickCallback: OnItemClickCallback? = null
+
+    fun setOnItemClickCallback (onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+
+    fun setList(userModels: ArrayList<UserModel>) {
         list.clear()
-        list.addAll(users)
+        list.addAll(userModels)
         notifyDataSetChanged()
     }
 
-    class ViewHolder (val binding: AdapterUserBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(user: User) {
+    inner class ViewHolder (val binding: AdapterUserBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(userModel: UserModel) {
+            binding.root.setOnClickListener {
+                onItemClickCallback?.onItemCLicked(userModel)
+            }
+
             binding.apply {
                 Glide.with(itemView)
-                    .load(user.avatar_url)
+                    .load(userModel.avatar_url)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .centerCrop()
                     .into(ivUserAdapter)
-                tvUser.text = user.login
+                tvUser.text = userModel.login
             }
 
         }
@@ -43,5 +52,9 @@ class UserAdapter: RecyclerView.Adapter<UserAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int {
         return list.size
+    }
+
+    interface OnItemClickCallback {
+        fun onItemCLicked(data: UserModel)
     }
 }
