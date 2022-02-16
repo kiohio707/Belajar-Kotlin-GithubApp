@@ -1,7 +1,6 @@
 Token	
-	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
-        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
-
+	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
+	
 Library
 	implementation "com.squareup.retrofit2:retrofit:2.6.2"
 	implementation "com.squareup.retrofit2:converter-gson:2.6.2"

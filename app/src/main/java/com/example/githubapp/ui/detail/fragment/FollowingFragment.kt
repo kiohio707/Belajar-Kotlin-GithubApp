@@ -5,17 +5,63 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubapp.adapter.UserAdapter
 import com.example.githubapp.databinding.FragmentFollowBinding
+import com.example.githubapp.ui.detail.DetailUserActivity
 
 class FollowingFragment: Fragment() {
-    lateinit var binding: FragmentFollowBinding
+    private var binding: FragmentFollowBinding? = null
+
+    lateinit var viewModel: FollowingViewModel
+    lateinit var adapter: UserAdapter
+    lateinit var username: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val args = arguments
+        username = args?.getString(DetailUserActivity.EXTRA_USERNAME).toString()
+
         binding = FragmentFollowBinding.inflate(inflater, container, false)
-        return binding.root
+
+
+        adapter = UserAdapter()
+        adapter.notifyDataSetChanged()
+
+        binding?.apply {
+            recViewFollowers.setHasFixedSize(true)
+            recViewFollowers.layoutManager = LinearLayoutManager(context)
+            recViewFollowers.adapter = adapter
+        }
+
+        showLoading(true)
+
+        viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(FollowingViewModel::class.java)
+        viewModel.setListFollowing(username)
+        viewModel.getListFollowing().observe(viewLifecycleOwner) {
+            if (it != null) {
+                adapter.setList(it)
+                showLoading(false)
+            }
+        }
+        return binding?.root
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+
+    private fun showLoading(state: Boolean) {
+        if(state) {
+            binding?.progressBarFollowers?.visibility = View.VISIBLE
+        } else {
+            binding?.progressBarFollowers?.visibility = View.GONE
+        }
     }
 }

@@ -25,6 +25,9 @@ class DetailUserActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val username = intent.getStringExtra(EXTRA_USERNAME)
+        val bundle = Bundle()
+        bundle.putString(EXTRA_USERNAME, username)
+
 
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(DetailUserViewModel::class.java)
 
@@ -34,8 +37,8 @@ class DetailUserActivity : AppCompatActivity() {
                 binding.apply {
                     tvName.text = it.name
                     tvUsername.text = it.login
-                    tvFollowers.text = "${it.follower} Follower"
-                    tvFollowing.text = "${it.follower} Follower"
+                    tvFollowers.text = "${it.followers} Follower"
+                    tvFollowing.text = "${it.following} Following"
                     Glide.with(this@DetailUserActivity)
                         .load(it.avatar_url)
                         .transition(DrawableTransitionOptions.withCrossFade())
@@ -45,7 +48,7 @@ class DetailUserActivity : AppCompatActivity() {
             }
         }
 
-        val sectionPagerAdapter = SectionPagerAdapter(this, supportFragmentManager)
+        val sectionPagerAdapter = SectionPagerAdapter(this, supportFragmentManager, bundle)
         binding.apply {
             viewPagerDetail.adapter = sectionPagerAdapter
             tabLayoutDetail.setupWithViewPager(viewPagerDetail)

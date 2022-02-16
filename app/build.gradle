@@ -3,6 +3,9 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("secrets.properties")))
+
 android {
     compileSdk 31
 
@@ -12,6 +15,7 @@ android {
         targetSdk 31
         versionCode 1
         versionName "1.0"
+        buildConfigField "String", "GITHUB_API_TOKEN",localProperties['GITHUB_API_TOKEN']
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -32,6 +36,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
 }
 
 dependencies {

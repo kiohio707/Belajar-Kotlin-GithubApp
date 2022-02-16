@@ -3,10 +3,12 @@ package com.example.githubapp.ui.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.githubapp.BuildConfig
 import com.example.githubapp.adapter.UserAdapter
 import com.example.githubapp.databinding.ActivityMainBinding
 import com.example.githubapp.model.UserModel
@@ -22,6 +24,8 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        Log.i("APIKEY", BuildConfig.GITHUB_API_TOKEN)
 
         adapter = UserAdapter()
         adapter.notifyDataSetChanged()
